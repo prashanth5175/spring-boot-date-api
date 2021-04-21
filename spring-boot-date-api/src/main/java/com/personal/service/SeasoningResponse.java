@@ -1,8 +1,5 @@
 package com.personal.service;
 
-import lombok.Data;
-
-@Data
 public class SeasoningResponse {
 	
 	private long numberOfPaymentsMade;
