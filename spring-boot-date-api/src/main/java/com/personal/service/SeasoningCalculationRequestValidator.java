@@ -20,11 +20,17 @@ public class SeasoningCalculationRequestValidator implements Validator  {
 		SeasoningCalculationRequest request = (SeasoningCalculationRequest)req;
 		if (errors.getErrorCount() == 0) {
 			long  numberOfPaymentsMade = monthsDiff(request.getFirstPaymentDueDate(),request.getPaymentDueDate());
-			long  priorLoanSeasoningDays = daysDiff(request.getFirstPaymentDueDate(),request.getPaymentDueDate());
-			if(numberOfPaymentsMade<0 || priorLoanSeasoningDays<0) {
-				errors.rejectValue("FirstPaymentDueDate", "INVALID","not a valid due date");
-				errors.rejectValue("PaymentDueDate", "INVALID","not a valid due date");
+			long  priorLoanSeasoningDays = daysDiff(request.getFirstPaymentDueDate(),request.getClosingDate());
+			if(numberOfPaymentsMade<0) {
+				errors.rejectValue("FirstPaymentDueDate", "INVALID","Payment Due date cannot be prior to the FirstPaymentDueDate");
+//				errors.rejectValue(null,"Payment Due date cannot be prior to the FirstPaymentDueDate");
 			}
+			/*
+			 * if(priorLoanSeasoningDays<0) { // errors.rejectValue("FirstPaymentDueDate",
+			 * "INVALID","clsoing Due date cannot be prior to the FirstPaymentDueDate");
+			 * errors.rejectValue(
+			 * null,"clsoing Due date cannot be prior to the FirstPaymentDueDate"); }
+			 */
 		}
 	}
 

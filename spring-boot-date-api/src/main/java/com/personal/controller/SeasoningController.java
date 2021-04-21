@@ -3,8 +3,6 @@ package com.personal.controller;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
@@ -30,8 +28,8 @@ public class SeasoningController {
     }
 	
 	@GetMapping("/seasoning")
-	public ResponseEntity<SeasoningResponse> get(@Valid SeasoningCalculationRequest seasoningCalculationRequest) {
-		return new ResponseEntity<SeasoningResponse>(service.calculate( seasoningCalculationRequest.getPaymentDueDate(), seasoningCalculationRequest.getFirstPaymentDueDate(), seasoningCalculationRequest.getClosingDate()), HttpStatus.OK) ;
+	public SeasoningResponse get(@Valid SeasoningCalculationRequest seasoningCalculationRequest) {
+		return service.calculate(seasoningCalculationRequest);
 	}
 	
 }

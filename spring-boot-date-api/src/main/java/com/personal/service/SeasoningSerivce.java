@@ -11,26 +11,30 @@ import org.springframework.stereotype.Service;
 public class SeasoningSerivce {
 
 	private static long paymentsThreashold = 6;
-	private static long paymentDaysThreashold = 180;
+	private static long paymentDaysThreashold = 210;
 	
-	public SeasoningResponse calculate(String paymentDueDate , String firstPaymentDueDate , String closingDate ) {
-		long  numberOfPaymentsMade = monthsDiff(firstPaymentDueDate,paymentDueDate);
-		long  priorLoanSeasoningDays = daysDiff(firstPaymentDueDate,paymentDueDate);
-		SeasoningResponse res = new SeasoningResponse();
-		res.setNumberOfPaymentsMade(numberOfPaymentsMade);
-		res.setPriorLoanSeasoningDays(priorLoanSeasoningDays);
-		if(numberOfPaymentsMade>=paymentsThreashold) {
-			res.setDoesLoanMeetSeasoningPaymentNumberRequirement(YES);
-		}else {
-			res.setDoesLoanMeetSeasoningPaymentNumberRequirement(NO);
+	 public SeasoningResponse calculate(SeasoningCalculationRequest seasoningCalculationRequest ) {
+		 
+		 	String firstPaymentDueDate =  seasoningCalculationRequest.getFirstPaymentDueDate();
+		 	String paymentDueDate = seasoningCalculationRequest.getPaymentDueDate();
+		 	String closingDate = seasoningCalculationRequest.getClosingDate();
+		 	
+			long  numberOfPaymentsMade = monthsDiff(firstPaymentDueDate,paymentDueDate);
+			long  priorLoanSeasoningDays = daysDiff(firstPaymentDueDate,closingDate);
+			SeasoningResponse res = new SeasoningResponse();
+			res.setNumberOfPaymentsMade(numberOfPaymentsMade);
+			res.setPriorLoanSeasoningDays(priorLoanSeasoningDays);
+			if(numberOfPaymentsMade>=paymentsThreashold) {
+				res.setDoesLoanMeetSeasoningPaymentNumberRequirement(YES);
+			}else {
+				res.setDoesLoanMeetSeasoningPaymentNumberRequirement(NO);
+			}
+			
+			if(priorLoanSeasoningDays>=paymentDaysThreashold) {
+				res.setDoesLoanMeetSeasoningDaysRequirement(YES);
+			}else {
+				res.setDoesLoanMeetSeasoningDaysRequirement(NO);
+			}
+			return res;
 		}
-		
-		if(priorLoanSeasoningDays>=paymentDaysThreashold) {
-			res.setDoesLoanMeetSeasoningDaysRequirement(YES);
-		}else {
-			res.setDoesLoanMeetSeasoningDaysRequirement(NO);
-		}
-		return res;
-	}
-	
 }
